@@ -32,17 +32,17 @@ ds = pydualsense()
 ds.init()
 
 leftColumn = [
-    [sg.Text("Type")], 
+    [sg.Text("Mode")], 
     [sg.Text("Speed")],
     [sg.Text("ColorA")],
     [sg.Text("ColorB")],
 ]
 
 rightColumn = [
-    [sg.Combo(["Solid", "Pulse", "Rainbow", "Input Display"], default_value="Solid", size=(15, 20), readonly=True, key="type")],
-    [sg.Input("7", key="speed", size=(5,0))],
+    [sg.Combo(["Solid", "Pulse", "Rainbow"], default_value="Solid", size=(15, 20), readonly=True, key="type", enable_events=True)],
+    [sg.Input("7", key="speed", size=(5,0), text_color="red")],
     [sg.Input("0", key="ar", size=(5,0)), sg.Input("0", key="ag", size=(5,0)), sg.Input("255", key="ab", size=(5,0))],
-    [sg.Input("0", key="br", size=(5,0)), sg.Input("0", key="bg", size=(5,0)), sg.Input("25", key="bb", size=(5,0))],
+    [sg.Input("0", key="br", size=(5,0), text_color="red"), sg.Input("0", key="bg", size=(5,0), text_color="red"), sg.Input("25", key="bb", size=(5,0), text_color="red")],
 ]
 
 ftypes = (("DSL", ".dsl"), ("TXT", ".txt"), ("ALL FILES", ".*"))
@@ -73,8 +73,33 @@ def windowLoop():
         print(event,values)
         if event in (None, "Exit"):
             break
-        elif event == "Apply Changes":
+        elif event == "type":
             type = values["type"]
+            if values["type"] =="Solid":
+                window["speed"].update(text_color="red")
+                window["ar"].update(text_color="black")
+                window["ag"].update(text_color="black")
+                window["ab"].update(text_color="black")
+                window["br"].update(text_color="red")
+                window["bg"].update(text_color="red")
+                window["bb"].update(text_color="red")
+            elif values["type"] == "Pulse":
+                window["speed"].update(text_color="black")
+                window["ar"].update(text_color="black")
+                window["ag"].update(text_color="black")
+                window["ab"].update(text_color="black")
+                window["br"].update(text_color="black")
+                window["bg"].update(text_color="black")
+                window["bb"].update(text_color="black")
+            elif values["type"] == "Rainbow":
+                window["speed"].update(text_color="black")
+                window["ar"].update(text_color="red")
+                window["ag"].update(text_color="red")
+                window["ab"].update(text_color="red")
+                window["br"].update(text_color="red")
+                window["bg"].update(text_color="red")
+                window["bb"].update(text_color="red")
+        elif event == "Apply Changes":
             speed = float(values["speed"])
             colora = (tocel(values["ar"]), tocel(values["ag"]), tocel(values["ab"]))
             colorb = (tocel(values["br"]), tocel(values["bg"]), tocel(values["bb"]))
